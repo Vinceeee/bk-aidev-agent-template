@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bk-cli-service-webpack dev",
+    "build": "bk-cli-service-webpack build",
+    "server": "node ./server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blueking/ai-blueking": "0.2.15-beta.2",
+    "@blueking/cli-service-webpack": "0.0.4",
+    "bkui-vue": "2.0.1-beta.40",
+    "dayjs": "^1.11.12",
+    "express-art-template": "^1.0.1",
+    "vue": "^3.4.33"
+  },
+  "engines": {
+    "node": ">= 16.16.0"
+  }
+}
