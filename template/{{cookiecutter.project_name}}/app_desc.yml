@@ -22,9 +22,6 @@ modules:
       - key: BK_SOPS_APP_CODE
         value: bksops
         description: bk-sops app code
-      - key: DJANGO_SETTINGS_MODULE
-        value: aidev.core.conf.plugin
-        description: django settings module path
       - key: BK_APP_CONFIG_PATH
         value: bk_plugin_runtime.config
         description: blueapps config path
@@ -65,9 +62,3 @@ modules:
         value: "{{ cookiecutter.llm_service_prefix }}"
         description: LLM service prefix
       {% endif %}
-  frontend:
-    language: NodeJS
-    source_dir: frontend
-    processes:
-      web:
-        command: npm run server
