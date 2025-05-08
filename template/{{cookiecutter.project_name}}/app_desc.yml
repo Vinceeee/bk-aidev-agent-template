@@ -10,6 +10,15 @@ modules:
       - key: PIP_VERSION
         value: 21.0
         description: pip version control
+      - key: PYTHONPATH
+        value: /app
+        description: ADD PYTHONPATH
+      - key: BK_APP_CONFIG_PATH
+        value: bk_plugin_runtime.config
+        description: app config path
+      - key: DJANGO_SETTINGS_MODULE
+        value: bk_plugin.patch.plugin
+        description: django settings module
       - key: BK_APIGW_MANAGER_URL_TMPL
         value: {{cookiecutter.apigw_manager_url_tmpl}}
         description: pip version control
@@ -38,7 +47,7 @@ modules:
         value: "True"
         description: set django allow unsafe async
       {% if cookiecutter.llm_gateway_url -%}
-      - key: LLM_GATEWAY_URL
+      - key: LLM_GW_ENDPOINT
         value: "{{cookiecutter.llm_gateway_url}}"
         description: LLM gateway endpoint
       {%- endif -%}

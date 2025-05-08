@@ -1,6 +1,7 @@
 import os
 
 from aidev_agent.api.bk_aidev import BKAidevApi
+from aidev_agent.api.utils import get_endpoint
 from aidev_agent.core.extend.models.llm_gateway import ChatModel
 from aidev_agent.services.chat import ChatCompletionAgent, ChatPrompt, ExecuteKwargs
 from bk_plugin_framework.kit.api import PluginAPIView
@@ -11,6 +12,7 @@ from langchain_core.prompts import jinja2_formatter
 from rest_framework.decorators import action
 from rest_framework.views import Response
 from rest_framework.viewsets import ViewSetMixin
+from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.status import is_success
 from ..versions.assistant_components import config
@@ -128,15 +130,21 @@ class ChatCompletionViewSet(PluginViewSet):
         )
 
 
-class IndexView(PluginAPIView):
+class IndexView(APIView):
     def get(self, request):
+        if settings.ENVIRONMENT == "dev":
+            APIGW_ENDPOINT = ""
+        else:
+            APIGW_ENDPOINT = get_endpoint(settings.BK_APIGW_NAME, settings.ENVIRONMENT)
+            APIGW_ENDPOINT.replace("http://", "https://")
+
         with open(f"{BASE_DIR}/dist/index.html") as fo:
             rendered = jinja2_formatter(
                 fo.read(),
                 **{
-                    "SITE_URL": "/bk_plugin/plugin_api/index",
+                    "SITE_URL": "",
                     "BK_STATIC_URL": "",
-                    "BK_API_PREFIX": f"{settings.APIGW_ENDPOINT}/bk_plugin/plugin_api/chat",
+                    "BK_API_PREFIX": f"{APIGW_ENDPOINT}/bk_plugin/plugin_api/chat",
                 },
             )
         return HttpResponse(rendered)
