@@ -2,7 +2,6 @@ import os
 import json
 
 from aidev_agent.api.bk_aidev import BKAidevApi
-from aidev_agent.api.utils import get_endpoint
 from aidev_agent.core.extend.models.llm_gateway import ChatModel
 from aidev_agent.services.chat import ChatCompletionAgent, ChatPrompt, ExecuteKwargs
 from bkoauth import get_app_access_token
