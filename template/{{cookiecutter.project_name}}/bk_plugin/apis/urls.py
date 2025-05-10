@@ -5,7 +5,7 @@ from .chat import (
     ChatCompletionViewSet,
     ChatSessionContentViewSet,
     ChatSessionViewSet,
-    AgentInfoView
+    AgentInfoViewSet
 )
 
 _router = DefaultRouter()
@@ -15,5 +15,5 @@ _router.register("chat_completion", ChatCompletionViewSet, "chat_completion")
 
 urlpatterns = [
     re_path(r"chat/", include(_router.urls)),
-    re_path(r"agent", AgentInfoView.as_view()),
+    re_path(r"agent", AgentInfoViewSet.as_view({"get": "list"})),
 ]
