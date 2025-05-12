@@ -158,7 +158,7 @@ class IndexView(APIView):
                 **{
                     "SITE_URL": "",
                     "BK_STATIC_URL": "",
-                    "BK_API_PREFIX": "/bk_plugin/plugin_api/chat",
+                    "BK_API_PREFIX": "/bk_plugin/plugin_api",
                     "BK_USER_NAME": getattr(request.user, "username", ""),
                 },
             )

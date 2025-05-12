@@ -5,15 +5,15 @@ from .chat import (
     ChatCompletionViewSet,
     ChatSessionContentViewSet,
     ChatSessionViewSet,
-    AgentInfoViewSet
+    AgentInfoViewSet,
 )
 
 _router = DefaultRouter()
+_router.register("agent", AgentInfoViewSet, "agent_info")
+_router.register("chat_completion", ChatCompletionViewSet, "chat_completion")
 _router.register("session", ChatSessionViewSet, "chat_session")
 _router.register("session_content", ChatSessionContentViewSet, "chat_session_content")
-_router.register("chat_completion", ChatCompletionViewSet, "chat_completion")
 
 urlpatterns = [
-    re_path(r"chat/", include(_router.urls)),
-    re_path(r"agent", AgentInfoViewSet.as_view({"get": "list"})),
+    re_path("", include(_router.urls)),
 ]
