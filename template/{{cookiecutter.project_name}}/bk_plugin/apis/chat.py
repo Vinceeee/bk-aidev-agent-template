@@ -1,13 +1,16 @@
 import os
+import json
 
 from aidev_agent.api.bk_aidev import BKAidevApi
-from aidev_agent.api.utils import get_endpoint
 from aidev_agent.core.extend.models.llm_gateway import ChatModel
 from aidev_agent.services.chat import ChatCompletionAgent, ChatPrompt, ExecuteKwargs
-from bk_plugin_framework.kit.api import PluginAPIView
+from bkoauth import get_app_access_token
+from bk_plugin_framework.kit.api import custom_authentication_classes
+from bk_plugin_framework.kit.decorators import login_exempt, inject_user_token
 from django.conf import settings
 from django.http import HttpResponse
 from django.http.response import StreamingHttpResponse
+from django.utils.decorators import method_decorator
 from langchain_core.prompts import jinja2_formatter
 from rest_framework.decorators import action
 from rest_framework.views import Response
@@ -21,7 +24,24 @@ from ..versions.assistant_components import config
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-class PluginViewSet(ViewSetMixin, PluginAPIView):
+@method_decorator(login_exempt, name="dispatch")
+@method_decorator(inject_user_token, name="dispatch")
+class PluginViewSet(ViewSetMixin, APIView):
+    authentication_classes = custom_authentication_classes
+
+    @staticmethod
+    def get_bkapi_authorization_info(request) -> str:
+        auth_info = {
+            "bk_app_code": settings.BK_APP_CODE,
+            "bk_app_secret": settings.BK_APP_SECRET,
+            settings.USER_TOKEN_KEY_NAME: request.token,
+        }
+        if settings.BKPAAS_ENVIRONMENT != "dev":
+            access_token = get_app_access_token().access_token
+            auth_info.update({"access_token": access_token})
+
+        return json.dumps(auth_info)
+
     def finalize_response(self, request, response, *args, **kwargs):
         # 目前仅对 Restful Response 进行处理
         if isinstance(response, Response):
@@ -132,26 +152,20 @@ class ChatCompletionViewSet(PluginViewSet):
 
 class IndexView(APIView):
     def get(self, request):
-        if settings.ENVIRONMENT == "dev":
-            APIGW_ENDPOINT = ""
-        else:
-            APIGW_ENDPOINT = get_endpoint(settings.BK_APIGW_NAME, settings.ENVIRONMENT)
-            APIGW_ENDPOINT.replace("http://", "https://")
-
         with open(f"{BASE_DIR}/dist/index.html") as fo:
             rendered = jinja2_formatter(
                 fo.read(),
                 **{
                     "SITE_URL": "",
                     "BK_STATIC_URL": "",
-                    "BK_API_PREFIX": f"{APIGW_ENDPOINT}/bk_plugin/plugin_api/chat",
+                    "BK_API_PREFIX": "/bk_plugin/plugin_api/chat",
                 },
             )
         return HttpResponse(rendered)
 
 
-class AgentInfoView(PluginAPIView):
-    def get(self, request):
+class AgentInfoViewSet(PluginViewSet):
+    def retrieve(self, request):
         client = BKAidevApi.get_client()
         result = client.api.retrieve_agent_config(
             path_params={"agent_code": settings.APP_CODE}

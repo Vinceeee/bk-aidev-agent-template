@@ -10,6 +10,7 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express o
 specific language governing permissions and limitations under the License.
 """
 
+from bk_plugin_framework.kit.decorators import login_exempt
 from bk_plugin.apis.chat import IndexView
 from django.conf import settings
 from django.conf.urls import include, url
@@ -55,7 +56,7 @@ if settings.ENVIRONMENT == "dev":
                 name="schema-swagger-ui",
             ),
             url(r"^debug/$", debug_panel, name="debug-panel"),
-            url(r"^$", IndexView.as_view(), name="index"),
+            url(r"^$", login_exempt(IndexView.as_view()), name="index"),
         ]
     )
 else:
@@ -67,5 +68,7 @@ else:
                 name="schema-swagger-ui",
             ),
             url(r"^$", IndexView.as_view(), name="index"),
+            url(r"^page/$", IndexView.as_view(), name="index"),
+            url(r"^side-slider/$", IndexView.as_view(), name="index"),
         ]
     )
