@@ -166,7 +166,8 @@ class IndexView(APIView):
 
 
 class AgentInfoViewSet(PluginViewSet):
-    def retrieve(self, request):
+    @action(detail=False, methods=["GET"], url_path="info", url_name="info")
+    def info(self, request):
         client = BKAidevApi.get_client()
         result = client.api.retrieve_agent_config(
             path_params={"agent_code": settings.APP_CODE}
