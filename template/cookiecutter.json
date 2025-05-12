@@ -16,7 +16,7 @@
   "chat_model": "hunyuan-turbo",
   "knowledgebase_ids": "[]",
   "knowledge_ids": "[]",
-  "tool_ids": "[]",
+  "tool_codes": "[]",
   "role_prompt": "[]",
   "topk": "10",
   "knowledge_resource_fine_grained_score_type": "LLM",
