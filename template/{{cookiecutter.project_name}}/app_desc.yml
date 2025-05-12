@@ -70,4 +70,14 @@ modules:
       - key: LLM_SERVICE_PREFIX
         value: "{{ cookiecutter.llm_service_prefix }}"
         description: LLM service prefix
+      {%- endif -%}
+      {% if cookiecutter.aidev_gateway_name %}
+      - key: AIDEV_GATEWAY_NAME
+        value: "{{ cookiecutter.aidev_gateway_name }}"
+        description: aidev gateway name
+      {%- endif -%}
+      {% if cookiecutter.bk_apigw_stage %}
+      - key: BK_APIGW_STAGE
+        value: "{{ cookiecutter.bk_apigw_stage }}"
+        description: bk apigw stage
       {% endif %}
