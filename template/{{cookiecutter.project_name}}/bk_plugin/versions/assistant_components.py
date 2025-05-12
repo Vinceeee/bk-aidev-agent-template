@@ -15,7 +15,7 @@ class PluginConfig(BaseModel):
     knowledge_ids: List[int] = {{cookiecutter.knowledge_ids}} # 知识（文件/文件夹） ID 的列表
 
     # 在 AIDev 站点注册工具，然后将对应的工具 ID 填在此处，可以在 agent 使用的时候调用相关工具。
-    tool_codes: List[str] = {{cookiecutter.tool_ids}}
+    tool_codes: List[str] = {{cookiecutter.tool_codes}}
 
     # 在 CommonQAAgent 内置 prompt 的基础上，用户自定义的增量 prompt。
     # 目前内部实现方式是将用户自定义的增量 prompt 直接拼接到 CommonQAAgent 内置 prompt 上。
@@ -29,12 +29,11 @@ class PluginConfig(BaseModel):
     intent_recognition_kwargs: dict = {
         "topk": {{cookiecutter.topk}},
         "knowledge_resource_fine_grained_score_type": "{{cookiecutter.knowledge_resource_fine_grained_score_type}}",
-        "knowledge_resource_reject_threshold": {{cookiecutter.knowledge_resource_reject_threshold}}
-        ,
+        "knowledge_resource_reject_threshold": {{cookiecutter.knowledge_resource_reject_threshold}},
         "independent_query_mode": "{{cookiecutter.independent_query_mode}}",
-        "with_index_specific_search_init": {{cookiecutter.with_index_specific_search_init}} ,
-        "with_index_specific_search_keywords": {{cookiecutter.with_index_specific_search_keywords}} ,
-        "with_index_specific_search_translation": {{cookiecutter.with_index_specific_search_translation}} ,
+        "with_index_specific_search_init": {{cookiecutter.with_index_specific_search_init}},
+        "with_index_specific_search_keywords": {{cookiecutter.with_index_specific_search_keywords}},
+        "with_index_specific_search_translation": {{cookiecutter.with_index_specific_search_translation}},
     }
 
 
