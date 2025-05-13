@@ -10,6 +10,9 @@ modules:
       - key: PIP_VERSION
         value: 21.0
         description: pip version control
+      - key: BK_APIGW_CORS_ALLOW_ORIGINS
+        value: **
+        description: BK_APIGW_CORS_ALLOW_ORIGINS
       - key: PYTHONPATH
         value: /app
         description: ADD PYTHONPATH
