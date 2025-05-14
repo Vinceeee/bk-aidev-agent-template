@@ -152,6 +152,11 @@ class ChatCompletionViewSet(PluginViewSet):
 
 class IndexView(APIView):
     def get(self, request):
+        client = BKAidevApi.get_client()
+        result = client.api.retrieve_agent_config(
+            path_params={"agent_code": settings.APP_CODE}
+        )
+        agent_name = result["data"]["agent_name"]
         with open(f"{BASE_DIR}/dist/index.html") as fo:
             rendered = jinja2_formatter(
                 fo.read(),
@@ -160,6 +165,7 @@ class IndexView(APIView):
                     "BK_STATIC_URL": "",
                     "BK_API_PREFIX": "/bk_plugin/plugin_api",
                     "BK_USER_NAME": getattr(request.user, "username", ""),
+                    "BK_AGENT_NAME": agent_name,
                 },
             )
         return HttpResponse(rendered)
