@@ -19,7 +19,7 @@ from langchain_openai.chat_models.base import _convert_message_to_dict
 class CommonAgent(Plugin):
     class Meta:
         # 固定,不需要修改,一旦修改会影响访问路径
-        version = "0.2.1assistant"
+        version = "1.0.0assistant"
         desc = "Common AI agent from AIDev"
 
     class Inputs(InputsModel):
